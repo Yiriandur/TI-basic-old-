@@ -1,0 +1,114 @@
+//TI-BASIC / SNAKE
+//Voer onderstaand in op de grafische rekenmachine van Texas Industries.
+//NB; werkt niet goed meer op recente TI softwareversies (2.43+).
+
+//- Deel 1: Het 'start'gedeelte, het deel met alle instellingen voor het scherm en spel
+:ClrDraw
+:Axesoff
+:FnOff
+:ZStandard
+:0→Xmin
+:94→Xmax
+:0→Ymin
+:62→Ymax
+:Line(6,49,89,49
+:Line(89,49,89,2
+:Line(89,2,6,2
+:Text(4,38,"SNAKE
+:5→L
+:5→P
+:{1,2,3,4,5}→L1
+:{5,5,5,5,5}→L2
+:1→X
+:0→Y
+:8→U
+:3→V
+:0→S
+:Text(24,43,"*
+
+//- Deel 2: De While-loop, deel dat herhaald wordt om per herhaling de 'snake' 1 stukje te verschuiven
+:While 1
+:P-L+1→T
+:T+85(T≤0)→T
+:Text(L2(T)*5+9,L1(T)*5+3,"            ← ← Let op! Vier spaties achter <">!
+:Text(4,8,S
+:If pxl-Test(L2(P)*5+11,L1(P)*5+6)=1
+:Goto 0
+:Text(L2(P)*5+9,L1(P)*5+3,"°
+:getKey→G
+:If G=21
+:Goto 2
+:If G=105
+:Pause
+:If G=24 and Y≠0
+:Then
+:-1→X
+:0→Y
+:End
+:If G=26 and Y≠0
+:Then
+:1→X
+:0→Y
+:End
+:If G=25 and X≠0
+:Then
+:0→X
+:-1→Y
+:End
+:If G=34 and X≠0
+:Then
+:0→X
+:1→Y
+:End
+:If L1(P)=U and L2(P)=V
+:Then
+:L+1→L
+:S+5→S
+:If L=85
+:Goto 1
+:Lbl A
+:randInt(1,16→U
+:randInt(1,9→V
+:If pxl-Test(5*V+10,5*U+5)=1
+:Goto A
+:Text(V*5+9,U*5+3,"*
+:If pxl-Test(V*5+10,U*5+10)=1
+:Text(V*5+9,U*5+8,"°
+:End
+:P+1→P
+:If P=86
+:Then
+:1→P
+:L1(85)+X→L1(P)
+:L2(85)+Y→L2(P)
+:Else
+:L1(P-1)+X→L1(P)
+:L2(P-1)+Y→L2(P)
+:End
+:If L1(P)=0
+:16→L1(P)
+:If L1(P)=17
+:1→L1(P)
+:If L2(P)=0
+:9→L2(P)
+:If L2(P)=10
+:1→L2(P)
+:End
+
+//- Deel 3: Het 'einde', de score wordt getoond en de instellingen worden teruggezet
+:Lbl 0
+:Text(27,30," GAME OVER!
+:Goto 2
+:Lbl 1
+:Text(27,28," YOU'VE WON!
+:Lbl 2
+:Text(33,30," SCORE:
+:Text(33,53,S
+:Pause
+:ClrDraw
+:ClrHome
+:ClrList L1,L2
+:ZStandard
+:AxesOn
+:FnOn
+:Disp
